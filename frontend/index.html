@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PulseGurgaon</title>
-
-<style>
+<title>PulseGurgaon</title><style>
 
 body{
-font-family: Arial, sans-serif;
+font-family:Arial,sans-serif;
 margin:0;
 background:#f4f6f9;
 }
 
 header{
-background:#1f4fa3;
+background:#0b57d0;
 color:white;
-padding:15px;
+padding:18px;
 font-size:26px;
 font-weight:bold;
 }
@@ -35,232 +32,148 @@ font-weight:bold;
 }
 
 .searchbar{
-padding:25px;
+padding:30px;
 background:white;
 text-align:center;
 }
 
 .searchbar input{
-width:80%;
+width:90%;
+max-width:700px;
 padding:16px;
 font-size:18px;
-border-radius:6px;
 border:1px solid #ccc;
-}
-
-.timeline{
-background:#eef2f7;
-padding:15px;
-font-size:14px;
-border-bottom:1px solid #ddd;
+border-radius:6px;
 }
 
 .container{
 display:flex;
+flex-wrap:wrap;
 padding:20px;
 }
 
-.left{
-width:70%;
-}
-
-.right{
-width:30%;
-padding-left:20px;
-}
-
-.section{
+.timeline{
+flex:2;
 background:white;
-margin-bottom:20px;
-padding:15px;
+padding:20px;
+margin-right:20px;
 border-radius:6px;
+min-height:300px;
 }
 
-.cards{
-display:flex;
-gap:15px;
+.article{
+border-bottom:1px solid #eee;
+padding:15px 0;
 }
 
-.card{
-background:#fafafa;
-padding:10px;
+.article h3{
+margin:0 0 6px 0;
+}
+
+.article a{
+color:#0b57d0;
+text-decoration:none;
+}
+
+.sidebar{
+flex:1;
+background:white;
+padding:20px;
 border-radius:6px;
-width:33%;
-}
-
-.card img{
-width:100%;
-border-radius:5px;
-}
-
-.ad{
-background:#e3e6ec;
-padding:25px;
-text-align:center;
-margin:15px 0;
-border-radius:6px;
-font-weight:bold;
 }
 
 .blog{
-display:flex;
-margin-bottom:12px;
+margin-bottom:20px;
 }
 
 .blog img{
-width:70px;
-height:70px;
-margin-right:10px;
+width:100%;
 border-radius:6px;
 }
 
-footer{
-text-align:center;
-padding:20px;
-background:#111;
-color:white;
+.ad{
 margin-top:30px;
+padding:20px;
+background:#f1f1f1;
+text-align:center;
+font-weight:bold;
 }
 
-</style>
-</head>
+footer{
+margin-top:40px;
+background:#111;
+color:white;
+padding:20px;
+text-align:center;
+}
 
-<body>
+.loading{
+color:gray;
+margin-top:10px;
+}
 
-<header>
+</style></head><body><header>
 PulseGurgaon
-</header>
-
-<nav>
+</header><nav>
+<a href="#">Home</a>
+<a href="#">India</a>
 <a href="#">Gurgaon</a>
-<a href="#">Finance</a>
 <a href="#">World</a>
+<a href="#">Finance</a>
 <a href="#">Blogs</a>
-</nav>
-
-<div class="searchbar">
-<input type="text" placeholder="Search cities, companies, topics or world news...">
-</div>
-
-<div class="timeline">
-09:00 Gurgaon rain alert issued | 09:30 Delhi-Gurgaon traffic slows | 10:05 Stock market opens positive
-</div>
-
-<div class="container">
-
-<div class="left">
-
-<div class="section">
-<h2>Gurgaon News</h2>
-
-<div class="cards">
-
-<div class="card">
-<img src="https://picsum.photos/400/200">
-<p>Major Traffic Disruption in Gurgaon due to heavy rain</p>
-</div>
-
-<div class="card">
-<img src="https://picsum.photos/401/200">
-<p>Haryana CM announces new development initiatives</p>
-</div>
-
-<div class="card">
-<img src="https://picsum.photos/402/200">
-<p>Police launch anti drunk driving campaign</p>
-</div>
-
-</div>
-</div>
-
-<div class="ad">Advertise Here</div>
-
-<div class="section">
-<h2>Finance</h2>
-
-<div class="cards">
-
-<div class="card">
-<img src="https://picsum.photos/403/200">
-<p>Stock market hits record high</p>
-</div>
-
-<div class="card">
-<img src="https://picsum.photos/404/200">
-<p>RBI announces new interest rates</p>
-</div>
-
-<div class="card">
-<img src="https://picsum.photos/405/200">
-<p>Government introduces tax benefits</p>
-</div>
-
-</div>
-</div>
-
-<div class="ad">Advertise Here</div>
-
-<div class="section">
-<h2>World</h2>
-
-<div class="cards">
-
-<div class="card">
-<img src="https://picsum.photos/406/200">
-<p>UN climate meeting begins</p>
-</div>
-
-<div class="card">
-<img src="https://picsum.photos/407/200">
-<p>Global markets react to inflation data</p>
-</div>
-
-<div class="card">
-<img src="https://picsum.photos/408/200">
-<p>New tech regulations announced</p>
-</div>
-
-</div>
-</div>
-
-</div>
-
-<div class="right">
-
-<div class="section">
-<h3>Trending Blogs</h3>
-
-<div class="blog">
-<img src="https://picsum.photos/200">
-<p>Top 30 Things To Do in Gurgaon</p>
-</div>
-
-<div class="blog">
-<img src="https://picsum.photos/201">
-<p>Best Cafes in Gurgaon for Work</p>
-</div>
-
-<div class="blog">
+</nav><div class="searchbar">
+<input type="text" placeholder="Search cities, topics, news...">
+</div><div class="container"><div class="timeline"><h2>Latest News</h2><p class="loading" id="loading">Loading latest news...</p><div id="newsContainer"></div></div><div class="sidebar"><h3>Blogs</h3><div class="blog">
 <img src="https://picsum.photos/202">
 <p>How to Invest ₹1000 in Stock Market</p>
-</div>
-
-<div class="blog">
+</div><div class="blog">
 <img src="https://picsum.photos/203">
 <p>Hidden Places in Gurgaon Locals Love</p>
-</div>
-
-</div>
-
-<div class="ad">Advertise Here</div>
-
-</div>
-
-</div>
-
-<footer>
+</div><div class="ad">
+Advertise Here
+</div></div></div><footer>
 PulseGurgaon © 2026
-</footer>
+</footer><script>
 
-</body>
+async function loadNews(){
+
+try{
+
+const response = await fetch("https://pulsegurgaon-backend.onrender.com/news");
+
+const news = await response.json();
+
+const container = document.getElementById("newsContainer");
+
+document.getElementById("loading").style.display="none";
+
+news.slice(0,15).forEach(article => {
+
+const div = document.createElement("div");
+
+div.className="article";
+
+div.innerHTML = `
+<h3>${article.title}</h3>
+<p>${article.source}</p>
+<a href="${article.link}" target="_blank">Read full article</a>
+`;
+
+container.appendChild(div);
+
+});
+
+}
+
+catch(error){
+
+document.getElementById("loading").innerText="Backend waking up... refresh in 20 seconds.";
+
+}
+
+}
+
+loadNews();
+
+</script></body>
 </html>
