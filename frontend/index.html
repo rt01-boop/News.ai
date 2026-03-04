@@ -2,7 +2,9 @@
 <html>
 <head>
 <title>PulseGurgaon</title>
+
 <style>
+
 body{
 font-family:Arial;
 background:#0f172a;
@@ -16,7 +18,13 @@ padding:15px;
 margin-bottom:15px;
 border-radius:10px
 }
+
+a{
+color:#38bdf8
+}
+
 </style>
+
 </head>
 
 <body>
@@ -26,26 +34,32 @@ border-radius:10px
 <div id="news"></div>
 
 <script>
+
 async function loadNews(){
 
-let res = await fetch("/news")
-let data = await res.json()
+let response = await fetch("http://localhost:8000/news")
+
+let data = await response.json()
 
 let html=""
 
-data.forEach(n=>{
-html+=`
+data.forEach(article => {
+
+html += `
 <div class="card">
-<h3>${n.title}</h3>
-<a href="${n.link}" target="_blank">Read source</a>
+<h3>${article.title}</h3>
+<a href="${article.link}" target="_blank">Read source</a>
 </div>
 `
+
 })
 
 document.getElementById("news").innerHTML = html
+
 }
 
 loadNews()
+
 </script>
 
 </body>
