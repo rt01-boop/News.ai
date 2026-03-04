@@ -1,7 +1,10 @@
 from fastapi import FastAPI
 import feedparser
+from apscheduler.schedulers.background import BackgroundScheduler
 
 app = FastAPI()
+
+articles = []
 
 RSS_FEEDS = [
 "https://news.google.com/rss/search?q=gurgaon",
@@ -10,21 +13,39 @@ RSS_FEEDS = [
 "https://news.google.com/rss?hl=en-IN&gl=IN&ceid=IN:en"
 ]
 
-@app.get("/")
-def home():
-    return {"message": "PulseGurgaon API running"}
 
-@app.get("/news")
-def get_news():
-    articles = []
+def scrape_news():
+
+    global articles
+    new_articles = []
 
     for url in RSS_FEEDS:
+
         feed = feedparser.parse(url)
 
         for entry in feed.entries[:5]:
-            articles.append({
+
+            new_articles.append({
                 "title": entry.title,
                 "link": entry.link
             })
 
+    articles = new_articles
+    print("News updated")
+
+
+@app.get("/")
+def home():
+    return {"message": "PulseGurgaon running"}
+
+
+@app.get("/news")
+def get_news():
     return articles
+
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(scrape_news, "interval", minutes=2)
+scheduler.start()
+
+scrape_news()
