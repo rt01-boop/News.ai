@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PulseGurgaon</title>
+
+<title>PulseGurgaon News</title>
 
 <style>
 
@@ -9,18 +10,28 @@ body{
 font-family:Arial;
 background:#0f172a;
 color:white;
-padding:20px
+padding:20px;
+}
+
+h1{
+margin-bottom:30px;
 }
 
 .card{
 background:#1e293b;
-padding:15px;
-margin-bottom:15px;
-border-radius:10px
+padding:20px;
+margin-bottom:20px;
+border-radius:10px;
+transition:0.2s;
+}
+
+.card:hover{
+transform:scale(1.02);
 }
 
 a{
-color:#38bdf8
+color:#38bdf8;
+text-decoration:none;
 }
 
 </style>
@@ -29,7 +40,7 @@ color:#38bdf8
 
 <body>
 
-<h1>PulseGurgaon News</h1>
+<h1>PulseGurgaon</h1>
 
 <div id="news"></div>
 
@@ -37,9 +48,9 @@ color:#38bdf8
 
 async function loadNews(){
 
-let response = await fetch("http://localhost:8000/news")
+let res = await fetch("https://pulsegurgaon-backend.onrender.com/news")
 
-let data = await response.json()
+let data = await res.json()
 
 let html=""
 
@@ -48,7 +59,7 @@ data.forEach(article => {
 html += `
 <div class="card">
 <h3>${article.title}</h3>
-<a href="${article.link}" target="_blank">Read source</a>
+<a href="${article.link}" target="_blank">Read full article</a>
 </div>
 `
 
