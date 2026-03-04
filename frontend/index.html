@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PulseGurgaon</title>
+<style>
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+padding:20px
+}
+
+.card{
+background:#1e293b;
+padding:15px;
+margin-bottom:15px;
+border-radius:10px
+}
+</style>
+</head>
+
+<body>
+
+<h1>PulseGurgaon News</h1>
+
+<div id="news"></div>
+
+<script>
+async function loadNews(){
+
+let res = await fetch("/news")
+let data = await res.json()
+
+let html=""
+
+data.forEach(n=>{
+html+=`
+<div class="card">
+<h3>${n.title}</h3>
+<a href="${n.link}" target="_blank">Read source</a>
+</div>
+`
+})
+
+document.getElementById("news").innerHTML = html
+}
+
+loadNews()
+</script>
+
+</body>
+</html>
