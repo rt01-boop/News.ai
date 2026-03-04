@@ -1,0 +1,37 @@
+<!DOCTYPE html><html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Article</title><style>
+
+body{
+font-family:Arial;
+padding:30px;
+background:#f4f6f9;
+}
+
+h1{
+font-size:28px;
+}
+
+.source{
+color:gray;
+margin-bottom:20px;
+}
+
+a{
+color:#0b57d0;
+}
+
+</style></head><body><h1 id="title"></h1>
+<p class="source" id="source"></p><p>This article was collected by PulseGurgaon news engine.</p><a id="link" target="_blank">Read original source</a>
+
+<script>
+
+const params = new URLSearchParams(window.location.search)
+
+document.getElementById("title").innerText = params.get("title")
+document.getElementById("source").innerText = params.get("source")
+document.getElementById("link").href = params.get("url")
+
+</script></body>
+</html>
