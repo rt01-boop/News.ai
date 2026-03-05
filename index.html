@@ -1,6 +1,9 @@
-<!DOCTYPE html><html><head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PulseGurgaon</title><style>
+<!DOCTYPE html>
+<html>
+<head>
+<title>PulseGurgaon</title>
+
+<style>
 
 body{
 font-family:Arial;
@@ -8,122 +11,151 @@ margin:0;
 background:#f2f2f2;
 }
 
-header{
-background:#0b57d0;
+.header{
+background:#1e63c6;
 color:white;
-padding:18px;
-font-size:24px;
+padding:15px;
+font-size:22px;
 font-weight:bold;
 }
 
-nav{
-background:white;
-padding:12px;
-border-bottom:1px solid #ddd;
+.nav{
+background:#e6e6e6;
+padding:10px;
 }
 
-nav a{
+.nav a{
 margin-right:20px;
 text-decoration:none;
-color:#333;
-font-weight:bold;
+color:black;
+}
+
+.search{
+padding:20px;
+text-align:center;
+}
+
+.search input{
+width:80%;
+padding:12px;
+font-size:16px;
 }
 
 .container{
 display:flex;
-flex-wrap:wrap;
+gap:20px;
 padding:20px;
 }
 
-.news{
-flex:2;
+.box{
 background:white;
 padding:20px;
 border-radius:6px;
-margin-right:20px;
-}
-
-.sidebar{
 flex:1;
-background:white;
-padding:20px;
-border-radius:6px;
 }
 
 .article{
-padding:10px 0;
-border-bottom:1px solid #eee;
+margin-bottom:15px;
+padding-bottom:10px;
+border-bottom:1px solid #ddd;
 }
 
-.article a{
-color:#0b57d0;
-text-decoration:none;
-font-size:16px;
-}
-
-footer{
-background:#111;
+.footer{
+background:black;
 color:white;
-padding:15px;
 text-align:center;
-margin-top:40px;
+padding:12px;
 }
 
-</style></head><body><header>
-PulseGurgaon
-</header><nav>
-<a href="#">Gurgaon</a>
-<a href="#">Finance</a>
-<a href="#">World</a>
-<a href="#">Blogs</a>
-</nav><div class="container"><div class="news"><h2>Latest News</h2><div id="newsContainer">
+</style>
+
+</head>
+
+<body>
+
+<div class="header">PulseGurgaon</div>
+
+<div class="nav">
+<a>Home</a>
+<a>India</a>
+<a>Gurgaon</a>
+<a>World</a>
+<a>Finance</a>
+<a>Blogs</a>
+</div>
+
+<div class="search">
+<input placeholder="Search news, places, dates...">
+</div>
+
+<div class="container">
+
+<div class="box">
+<h2>Latest News</h2>
+
+<div id="newsContainer">
 Loading news...
-</div></div><div class="sidebar"><h3>Blogs</h3><p>How to Invest ₹1000 in Stock Market</p>
-<p>Hidden Places in Gurgaon Locals Love</p></div></div><footer>
-PulseGurgaon © 2026
-</footer><script>
+</div>
+
+</div>
+
+<div class="box">
+<h2>Blogs</h2>
+
+<p>How to Invest ₹1000 in Stock Market</p>
+<p>Hidden Places in Gurgaon Locals Love</p>
+
+</div>
+
+</div>
+
+<div class="footer">PulseGurgaon © 2026</div>
+
+<script>
 
 async function loadNews(){
 
-const container = document.getElementById("newsContainer")
+const container=document.getElementById("newsContainer");
 
 try{
 
-const response = await fetch("https://pulsegurgaon-backend.onrender.com/news")
+const response=await fetch("https://pulsegurgaon-backend.onrender.com/news");
 
-const data = await response.json()
+const data=await response.json();
 
-container.innerHTML=""
+container.innerHTML="";
 
 data.slice(0,20).forEach(article=>{
 
-const div=document.createElement("div")
+const div=document.createElement("div");
 
-div.className="article"
+div.className="article";
 
 div.innerHTML=`
-<a href="${article.link}" target="_blank">
-${article.title}
-</a>
-`
+<h3>${article.title}</h3>
+<p>${article.source}</p>
+<a href="${article.link}" target="_blank">Read source</a>
+`;
 
-container.appendChild(div)
+container.appendChild(div);
 
-})
+});
 
-}catch(err){
+}
 
-container.innerText="Backend waking up... retrying in 5 seconds"
+catch(err){
 
-setTimeout(loadNews,5000)
+container.innerText="Backend waking up... retrying in 5 seconds";
+
+setTimeout(loadNews,5000);
 
 }
 
 }
 
-loadNews()
+loadNews();
 
-setInterval(loadNews,120000)
+</script>
 
-</script></body>
+</body>
 </html>
