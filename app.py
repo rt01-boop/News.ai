@@ -10,8 +10,7 @@ def home():
     return "PulseGurgaon backend running"
 
 @app.route("/news")
-def get_news():
-
+def news():
     url = "https://news.google.com/rss/search?q=gurgaon+india+finance&hl=en-IN&gl=IN&ceid=IN:en"
 
     feed = feedparser.parse(url)
@@ -19,7 +18,6 @@ def get_news():
     articles = []
 
     for entry in feed.entries:
-
         articles.append({
             "title": entry.title,
             "source": entry.source.title if "source" in entry else "Google News",
@@ -27,6 +25,3 @@ def get_news():
         })
 
     return jsonify(articles)
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
