@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>PulseGurgaon</title>
 
 <style>
@@ -39,6 +40,8 @@ text-align:center;
 width:80%;
 padding:12px;
 font-size:16px;
+border-radius:5px;
+border:1px solid #ccc;
 }
 
 .container{
@@ -55,9 +58,26 @@ flex:1;
 }
 
 .article{
-margin-bottom:15px;
-padding-bottom:10px;
+margin-bottom:20px;
+padding-bottom:20px;
 border-bottom:1px solid #ddd;
+}
+
+.article img{
+width:100%;
+border-radius:5px;
+margin-bottom:10px;
+}
+
+.source{
+color:gray;
+font-size:14px;
+margin-bottom:8px;
+}
+
+.summary{
+margin-top:8px;
+font-size:14px;
 }
 
 .footer{
@@ -91,6 +111,7 @@ padding:12px;
 <div class="container">
 
 <div class="box">
+
 <h2>Latest News</h2>
 
 <div id="newsContainer">
@@ -100,6 +121,7 @@ Loading news...
 </div>
 
 <div class="box">
+
 <h2>Blogs</h2>
 
 <p>How to Invest ₹1000 in Stock Market</p>
@@ -125,16 +147,36 @@ const data=await response.json();
 
 container.innerHTML="";
 
-data.slice(0,20).forEach(article=>{
+data.forEach(article=>{
 
 const div=document.createElement("div");
 
 div.className="article";
 
 div.innerHTML=`
+
+<img src="https://source.unsplash.com/800x400/?finance,india,city">
+
 <h3>${article.title}</h3>
-<p>${article.source}</p>
-<a href="${article.link}" target="_blank">Read source</a>
+
+<div class="source">${article.source}</div>
+
+<div class="summary">
+
+<b>English summary:</b><br>
+This article discusses ${article.title}. More developments are expected soon.
+
+<br><br>
+
+<b>हिंदी सार:</b><br>
+यह खबर ${article.title} से संबंधित है और इससे जुड़ी नई जानकारी सामने आ सकती है।
+
+</div>
+
+<br>
+
+<a href="${article.link}" target="_blank">Read full source</a>
+
 `;
 
 container.appendChild(div);
