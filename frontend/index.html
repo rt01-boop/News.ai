@@ -1,11 +1,9 @@
 <!DOCTYPE html><html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PulseGurgaon</title><style>
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>PulseGurgaon</title><style>
 
 body{
-font-family:Arial,sans-serif;
+font-family:Arial;
 margin:0;
 background:#f4f6f9;
 }
@@ -31,6 +29,22 @@ color:#333;
 font-weight:bold;
 }
 
+.searchbar{
+background:white;
+padding:25px;
+text-align:center;
+border-bottom:1px solid #ddd;
+}
+
+.searchbar input{
+width:90%;
+max-width:650px;
+padding:14px;
+font-size:16px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
 .container{
 display:flex;
 flex-wrap:wrap;
@@ -53,6 +67,7 @@ padding:15px 0;
 
 .article h3{
 margin:0 0 6px 0;
+font-size:18px;
 }
 
 .article a{
@@ -67,12 +82,8 @@ padding:20px;
 border-radius:6px;
 }
 
-.notice{
-background:#fff3cd;
-padding:10px;
-border-radius:6px;
-margin-bottom:15px;
-display:none;
+.blog{
+margin-bottom:20px;
 }
 
 footer{
@@ -83,75 +94,79 @@ padding:20px;
 text-align:center;
 }
 
+.status{
+color:#888;
+font-size:14px;
+margin-bottom:10px;
+}
+
 </style></head><body><header>
 PulseGurgaon
 </header><nav>
+<a href="#">Home</a>
+<a href="#">India</a>
 <a href="#">Gurgaon</a>
-<a href="#">Finance</a>
 <a href="#">World</a>
+<a href="#">Finance</a>
 <a href="#">Blogs</a>
-</nav><div class="container"><div class="timeline"><div id="notice" class="notice">
-New articles available. Refresh page.
-</div><h2>Latest News</h2><div id="newsContainer">
+</nav><div class="searchbar">
+<input id="searchBox" placeholder="Search news, places, dates...">
+</div><div class="container"><div class="timeline"><h2>Latest News</h2><div id="status" class="status">
 Loading news...
-</div></div><div class="sidebar"><h3>Blogs</h3><p>How to Invest ₹1000 in Stock Market</p>
-<p>Hidden Places in Gurgaon Locals Love</p></div></div><footer>
+</div><div id="newsContainer"></div></div><div class="sidebar"><h3>Blogs</h3><div class="blog">
+How to Invest ₹1000 in Stock Market
+</div><div class="blog">
+Hidden Places in Gurgaon Locals Love
+</div></div></div><footer>
 PulseGurgaon © 2026
 </footer><script>
 
-let currentCount = 0;
-
 async function loadNews(){
+
+const container = document.getElementById("newsContainer")
+const status = document.getElementById("status")
 
 try{
 
-const response = await fetch("https://pulsegurgaon-backend.onrender.com/news");
+const response = await fetch("https://pulsegurgaon-backend.onrender.com/news")
 
-const data = await response.json();
+const data = await response.json()
 
-const container = document.getElementById("newsContainer");
+container.innerHTML=""
 
-if(currentCount === 0){
+status.innerText=""
 
-container.innerHTML="";
+data.slice(0,25).forEach(article=>{
 
-data.forEach(article=>{
+const div=document.createElement("div")
 
-const div=document.createElement("div");
-
-div.className="article";
+div.className="article"
 
 div.innerHTML=`
 <h3>${article.title}</h3>
 <p>${article.source}</p>
 <a href="${article.link}" target="_blank">Read source</a>
-`;
+`
 
-container.appendChild(div);
+container.appendChild(div)
 
-});
-
-currentCount = data.length;
+})
 
 }
 
-else if(data.length > currentCount){
+catch(err){
 
-document.getElementById("notice").style.display="block";
+status.innerText="Backend waking up... retrying in 5 seconds"
 
-}
-
-}catch(error){
-
-document.getElementById("newsContainer").innerText="Backend waking up... refresh in 30 seconds.";
+setTimeout(loadNews,5000)
 
 }
 
 }
 
-loadNews();
+loadNews()
 
-setInterval(loadNews,120000);
+setInterval(loadNews,120000)
 
 </script></body>
 </html>
