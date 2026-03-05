@@ -1,50 +1,32 @@
-from fastapi import FastAPI
+from flask import Flask, jsonify
+from flask_cors import CORS
 import feedparser
-from apscheduler.schedulers.background import BackgroundScheduler
 
-app = FastAPI()
+app = Flask(name)
 
-# storage for articles
+Allow frontend (GitHub pages) to access backend
+
+CORS(app)
+
+@app.route("/")
+def home():
+return "PulseGurgaon backend running"
+
+@app.route("/news")
+def news():
+
+feed = feedparser.parse("https://news.google.com/rss?hl=en-IN&gl=IN&ceid=IN:en")
+
 articles = []
 
-# RSS feeds we will scrape
-RSS_FEEDS = [
-    "https://news.google.com/rss/search?q=gurgaon",
-    "https://news.google.com/rss/search?q=haryana",
-    "https://news.google.com/rss/search?q=stock+market+india",
-    "https://news.google.com/rss?hl=en-IN&gl=IN&ceid=IN:en"
-]
+for entry in feed.entries[:50]:
+    articles.append({
+        "title": entry.title,
+        "link": entry.link,
+        "source": entry.source.title if "source" in entry else "Google News"
+    })
 
-def scrape_news():
-    global articles
+return jsonify(articles)
 
-    collected = []
-
-    for url in RSS_FEEDS:
-        feed = feedparser.parse(url)
-
-        for entry in feed.entries[:5]:
-            collected.append({
-                "title": entry.title,
-                "link": entry.link
-            })
-
-    articles = collected
-    print("News updated")
-
-@app.get("/")
-def home():
-    return {"message": "PulseGurgaon backend running"}
-
-@app.get("/news")
-def get_news():
-    return articles
-
-
-# scheduler that runs every 2 minutes
-scheduler = BackgroundScheduler()
-scheduler.add_job(scrape_news, "interval", minutes=2)
-scheduler.start()
-
-# run once when server starts
-scrape_news()
+if name == "main":
+app.run(host="0.0.0.0", port=10000)
