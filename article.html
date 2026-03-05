@@ -1,37 +1,109 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Article</title><style>
 
-body{
-font-family:Arial;
-padding:30px;
-background:#f4f6f9;
+<title>PulseGurgaon Article</title>
+
+<style>
+
+body{font-family:Arial;margin:0;background:#f2f2f2;}
+
+.header{
+background:#1e63c6;
+color:white;
+padding:15px;
+font-size:22px;
+font-weight:bold;
 }
 
-h1{
-font-size:28px;
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:25px;
+margin-top:20px;
+border-radius:6px;
+}
+
+img{
+width:100%;
+border-radius:6px;
+margin-bottom:20px;
 }
 
 .source{
 color:gray;
+margin-bottom:15px;
+}
+
+.lang{
 margin-bottom:20px;
 }
 
-a{
-color:#0b57d0;
+button{
+padding:8px 15px;
+margin-right:10px;
+cursor:pointer;
 }
 
-</style></head><body><h1 id="title"></h1>
-<p class="source" id="source"></p><p>This article was collected by PulseGurgaon news engine.</p><a id="link" target="_blank">Read original source</a>
+</style>
+
+</head>
+
+<body>
+
+<div class="header">PulseGurgaon</div>
+
+<div class="container">
+
+<div class="lang">
+<button onclick="showEnglish()">English</button>
+<button onclick="showHindi()">हिंदी</button>
+</div>
+
+<img id="image">
+
+<h2 id="title"></h2>
+
+<div class="source" id="source"></div>
+
+<div id="english"></div>
+
+<div id="hindi" style="display:none"></div>
+
+<br>
+
+<a id="original" target="_blank">View Original Source</a>
+
+</div>
 
 <script>
 
-const params = new URLSearchParams(window.location.search)
+const article=JSON.parse(localStorage.getItem("selectedArticle"));
 
-document.getElementById("title").innerText = params.get("title")
-document.getElementById("source").innerText = params.get("source")
-document.getElementById("link").href = params.get("url")
+document.getElementById("title").innerText=article.title;
+document.getElementById("source").innerText=article.source;
+document.getElementById("original").href=article.link;
 
-</script></body>
+document.getElementById("image").src="https://source.unsplash.com/900x500/?news,india";
+
+document.getElementById("english").innerText=
+"This article discusses "+article.title+". More developments are expected soon.";
+
+document.getElementById("hindi").innerText=
+"यह खबर "+article.title+" से संबंधित है और इससे जुड़ी नई जानकारी सामने आ सकती है।";
+
+function showEnglish(){
+document.getElementById("english").style.display="block";
+document.getElementById("hindi").style.display="none";
+}
+
+function showHindi(){
+document.getElementById("english").style.display="none";
+document.getElementById("hindi").style.display="block";
+}
+
+</script>
+
+</body>
 </html>
