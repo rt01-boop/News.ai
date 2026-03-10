@@ -1,5 +1,4 @@
-<!DOCTYPE html><html>
-<head><title>PulseGurgaon Article</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+<!DOCTYPE html><html><head><title>PulseGurgaon Article</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
 
 body{
 font-family:Arial;
@@ -85,24 +84,27 @@ if(article){
 document.getElementById("title").innerText = article.title
 
 document.getElementById("meta").innerText =
-article.source + " • " + new Date(article.time*1000).toLocaleString()
+(article.source || "Source") + " • " +
+new Date(article.time).toLocaleString()
 
-document.getElementById("summary").innerText = article.summary
+document.getElementById("summary").innerText =
+article.summary || "Summary not available"
 
-document.getElementById("article").innerText = article.article
+document.getElementById("article").innerText =
+article.article || "Article content loading..."
 
 document.getElementById("image").src =
 "https://image.pollinations.ai/prompt/" + article.title
 
-const list = document.getElementById("vocabList")
+const list=document.getElementById("vocabList")
 
 if(article.vocabulary){
 
-article.vocabulary.forEach(word=>{
+article.vocabulary.forEach(v=>{
 
 const li=document.createElement("li")
 
-li.innerText = word.word + " – " + word.meaning
+li.innerText = v.word + " – " + v.meaning
 
 list.appendChild(li)
 
@@ -112,5 +114,4 @@ list.appendChild(li)
 
 }
 
-</script></body>
-</html>
+</script></body></html>
