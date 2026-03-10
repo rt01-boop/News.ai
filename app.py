@@ -9,203 +9,73 @@ from flask_cors import CORS
 app = Flask(name)
 CORS(app)
 
-RSS_URL="https://news.google.com/rss/search?q=gurgaon+india+finance+world&hl=en-IN&gl=IN&ceid=IN:en"
+RSS_URL = "https://news.google.com/rss/search?q=gurgaon+india+finance+world&hl=en-IN&gl=IN&ceid=IN:en"
 
-articles=[]
-seen=set()
+articles = []
+seen_titles = set()
 
-MAX_ARTICLES=1000
-
--------------------------
-
-FALLBACK ENGINE
-
--------------------------
+MAX_ARTICLES = 1000
 
 def fallback_generate(title):
 
-sentences=[
-    f"{title} is attracting attention as new developments emerge.",
-    f"Experts say the situation may influence future economic or social trends.",
-    f"Observers are closely monitoring how the situation evolves.",
-    f"The event highlights broader changes taking place in society.",
-    f"More updates are expected as the story develops."
+sentences = [
+    f"{title} has recently attracted attention as new developments emerge.",
+    f"Experts say the situation could influence economic or social trends.",
+    f"Observers are closely watching how events unfold in the coming days.",
+    f"The topic highlights broader changes currently happening.",
+    f"More updates are expected as additional information becomes available."
 ]
 
-article=" ".join(random.sample(sentences,4))
+article_text = " ".join(random.sample(sentences,4))
 
 return {
-    "summary":article[:180],
-    "article":article,
+    "summary": article_text[:160],
+    "article": article_text,
     "vocabulary":[
         {"word":"development","meaning":"important event"},
-        {"word":"observer","meaning":"person watching closely"},
-        {"word":"analysis","meaning":"study of a situation"}
+        {"word":"observer","meaning":"person watching carefully"},
+        {"word":"trend","meaning":"general direction of change"}
     ]
 }
 
--------------------------
-
-PHONE WORKERS
-
--------------------------
-
-def phone_worker_1(title):
-
-try:
-
-    url="http://192.168.1.10:5000/rewrite"
-
-    r=requests.post(url,json={"title":title},timeout=5)
-
-    return r.json()
-
-except:
-    raise Exception()
-
-def phone_worker_2(title):
-
-try:
-
-    url="http://192.168.1.11:5000/rewrite"
-
-    r=requests.post(url,json={"title":title},timeout=5)
-
-    return r.json()
-
-except:
-    raise Exception()
-
-def phone_worker_3(title):
-
-try:
-
-    url="http://192.168.1.12:5000/rewrite"
-
-    r=requests.post(url,json={"title":title},timeout=5)
-
-    return r.json()
-
-except:
-    raise Exception()
-
--------------------------
-
-AI PROVIDERS
-
--------------------------
-
-def groq_generate(title):
-raise Exception()
-
-def openrouter_generate(title):
-raise Exception()
-
-def hf_generate(title):
-raise Exception()
-
-def together_generate(title):
-raise Exception()
-
-def deepinfra_generate(title):
-raise Exception()
-
-def fireworks_generate(title):
-raise Exception()
-
-def replicate_generate(title):
-raise Exception()
-
-def cohere_generate(title):
-raise Exception()
-
-def perplexity_generate(title):
-raise Exception()
-
--------------------------
-
-AI ROUTER
-
--------------------------
-
 def ai_router(title):
 
-providers=[
-    phone_worker_1,
-    phone_worker_2,
-    phone_worker_3,
-    groq_generate,
-    openrouter_generate,
-    hf_generate,
-    together_generate,
-    deepinfra_generate,
-    fireworks_generate,
-    replicate_generate,
-    cohere_generate,
-    perplexity_generate
-]
-
-for provider in providers:
-
-    try:
-
-        result=provider(title)
-
-        if result:
-
-            print("Used:",provider.__name__)
-
-            return result
-
-    except:
-
-        print("Failed:",provider.__name__)
-
-return fallback_generate(title)
-
--------------------------
-
-SCRAPER
-
--------------------------
+try:
+    return fallback_generate(title)
+except:
+    return fallback_generate(title)
 
 def update_news():
 
 global articles
 
-feed=feedparser.parse(RSS_URL)
+feed = feedparser.parse(RSS_URL)
 
 for entry in feed.entries:
 
-    title=entry.title
+    title = entry.title
 
-    if title in seen:
+    if title in seen_titles:
         continue
 
-    seen.add(title)
+    seen_titles.add(title)
 
-    ai=ai_router(title)
+    ai = ai_router(title)
 
-    article={
-        "title":title,
-        "source":entry.source.title if "source" in entry else "Google News",
-        "link":entry.link,
-        "summary":ai["summary"],
-        "article":ai["article"],
-        "vocabulary":ai["vocabulary"],
-        "time":time.time()
+    article = {
+        "title": title,
+        "source": entry.source.title if "source" in entry else "Google News",
+        "link": entry.link,
+        "summary": ai["summary"],
+        "article": ai["article"],
+        "vocabulary": ai["vocabulary"],
+        "time": int(time.time()*1000)
     }
 
     articles.insert(0,article)
 
-    if len(articles)>=MAX_ARTICLES:
-        articles=[]
-
--------------------------
-
-API
-
--------------------------
+    if len(articles) > MAX_ARTICLES:
+        articles = articles[:MAX_ARTICLES]
 
 @app.route("/news")
 def news():
@@ -219,12 +89,8 @@ def home():
 
 return "PulseGurgaon backend running"
 
--------------------------
+if name == "main":
 
-RUN
+port = int(os.environ.get("PORT", 10000))
 
--------------------------
-
-if name=="main":
-
-app.run(host="0.0.0.0",port=10000)
+app.run(host="0.0.0.0", port=port)
