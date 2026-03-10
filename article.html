@@ -24,15 +24,21 @@ margin-top:20px;
 border-radius:8px;
 }
 
-img{
+.hero img{
 width:100%;
 border-radius:6px;
 margin-bottom:20px;
 }
 
-.source{
-color:gray;
+.title{
+font-size:26px;
+font-weight:bold;
 margin-bottom:10px;
+}
+
+.meta{
+color:gray;
+margin-bottom:20px;
 }
 
 .summary{
@@ -43,9 +49,9 @@ margin-bottom:20px;
 }
 
 .article{
-line-height:1.6;
+line-height:1.7;
 font-size:16px;
-margin-bottom:20px;
+margin-bottom:25px;
 }
 
 .vocab{
@@ -58,70 +64,51 @@ border-radius:6px;
 margin-top:0;
 }
 
-.lang{
-margin-bottom:15px;
+.footer{
+text-align:center;
+margin-top:40px;
+color:gray;
 }
 
-button{
-padding:8px 15px;
-margin-right:10px;
-cursor:pointer;
-background:#1e63c6;
-color:white;
-border:none;
-border-radius:4px;
-}
+</style></head><body><div class="header">
+PulseGurgaon
+</div><div class="container"><div class="hero">
+<img id="image">
+</div><div class="title" id="title"></div><div class="meta" id="meta"></div><div class="summary" id="summary"></div><div class="article" id="article"></div><div class="vocab"><h3>Vocabulary</h3><ul id="vocabList"></ul></div></div><div class="footer">
+PulseGurgaon © 2026
+</div><script>
 
-</style></head><body><div class="header">PulseGurgaon</div><div class="container"><div class="lang">
-<button onclick="showEnglish()">English</button>
-<button onclick="showHindi()">हिंदी</button>
-</div><img id="image"><h2 id="title"></h2><div class="source">AI-Generated News Summary</div><div class="summary" id="summary"></div><div class="article" id="article"></div><div class="vocab"><h3>Vocabulary</h3><ul id="vocabList"></ul></div></div><script>
+const article = JSON.parse(localStorage.getItem("selectedArticle"))
 
-const title = decodeURIComponent(localStorage.getItem("articleTitle"))
+if(article){
 
-document.getElementById("title").innerText = title
+document.getElementById("title").innerText = article.title
+
+document.getElementById("meta").innerText =
+article.source + " • " + new Date(article.time*1000).toLocaleString()
+
+document.getElementById("summary").innerText = article.summary
+
+document.getElementById("article").innerText = article.article
 
 document.getElementById("image").src =
-"https://image.pollinations.ai/prompt/news " + title
+"https://image.pollinations.ai/prompt/" + article.title
 
-document.getElementById("summary").innerText =
-"This article discusses " + title +
-". It highlights the latest developments and explains why the event is important for readers following current affairs."
+const list = document.getElementById("vocabList")
 
-document.getElementById("article").innerText =
-title + " has recently attracted public attention as new developments continue to emerge. Experts say the situation reflects broader changes taking place in the world of politics, economics, and society. Reports suggest that the issue could have wider implications depending on how authorities and organizations respond. Observers are closely monitoring the situation as additional information becomes available. Analysts believe the event demonstrates how quickly global and local news can evolve, influencing public discussion and decision-making. Readers are encouraged to follow updates as more details are expected in the coming days."
+if(article.vocabulary){
 
-const vocab = [
-"Developments – important new events",
-"Implications – possible effects in the future",
-"Observers – people watching closely",
-"Authorities – official organizations",
-"Analysts – experts who study situations"
-]
+article.vocabulary.forEach(word=>{
 
-const list=document.getElementById("vocabList")
-
-vocab.forEach(word=>{
 const li=document.createElement("li")
-li.innerText=word
+
+li.innerText = word.word + " – " + word.meaning
+
 list.appendChild(li)
+
 })
 
-function showEnglish(){
-
-document.getElementById("summary").style.display="block"
-document.getElementById("article").style.display="block"
-
 }
-
-function showHindi(){
-
-document.getElementById("summary").innerText =
-"यह लेख " + title +
-" से संबंधित है और हाल की घटनाओं का सार प्रस्तुत करता है।"
-
-document.getElementById("article").innerText =
-title + " हाल ही में चर्चा का विषय बना हुआ है। विशेषज्ञों के अनुसार यह घटना व्यापक सामाजिक और आर्थिक परिवर्तनों को दर्शाती है। रिपोर्टों से पता चलता है कि आने वाले समय में इसके प्रभाव और स्पष्ट हो सकते हैं।"
 
 }
 
