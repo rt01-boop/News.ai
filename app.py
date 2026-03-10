@@ -21,38 +21,35 @@ def save_articles(data):
         json.dump(data, f, indent=2)
 
 
-def fallback_rewrite(text):
-    return text
-
-
 @app.route("/")
 def home():
-    return "PulseGurgaon AI backend running"
+    return "PulseGurgaon backend running"
 
 
 @app.route("/news")
-def news():
-    return jsonify(load_articles())
+def get_news():
+    articles = load_articles()
+    return jsonify(articles)
 
 
 @app.route("/add", methods=["POST"])
-def add():
+def add_article():
     data = request.json
 
     article = {
         "title": data.get("title"),
         "source": data.get("source"),
         "time": data.get("time"),
-        "summary": data.get("text"),
-        "article": fallback_rewrite(data.get("text")),
-        "vocabulary": []
+        "summary": data.get("summary"),
+        "article": data.get("article"),
+        "vocabulary": data.get("vocabulary", [])
     }
 
     articles = load_articles()
     articles.insert(0, article)
     save_articles(articles)
 
-    return {"status": "ok"}
+    return {"status": "success"}
 
 
 if __name__ == "__main__":
