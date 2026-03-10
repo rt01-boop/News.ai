@@ -1,10 +1,9 @@
 <!DOCTYPE html><html>
-<head><title>PulseGurgaon</title>
+<head>
+<title>PulseGurgaon</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
 
-*{
-box-sizing:border-box;
-}
+*{box-sizing:border-box;}
 
 body{
 font-family:Arial;
@@ -92,7 +91,6 @@ background:#fafafa;
 border-radius:8px;
 box-shadow:0 2px 6px rgba(0,0,0,0.1);
 padding:10px;
-min-width:0;
 }
 
 .card img{
@@ -140,7 +138,7 @@ text-align:center;
 padding:12px;
 }
 
-/* MOBILE */
+/* mobile */
 
 @media(max-width:900px){
 
@@ -170,15 +168,18 @@ padding:8px;
 <a>Blogs</a>
 </div><div class="search">
 <input placeholder="Search news, places, dates...">
-</div><div class="layout"><div class="ad">ADVERTISEMENT</div><div><div class="section"><h2>Gurgaon</h2><div class="slider">
+</div><div class="layout"><div class="ad">ADVERTISEMENT</div><div><div class="section">
+<h2>Gurgaon</h2><div class="slider">
 <button class="arrow" onclick="slide('gurgaon',-1)">❮</button>
 <div class="row" id="gurgaon"></div>
 <button class="arrow" onclick="slide('gurgaon',1)">❯</button>
-</div></div><div class="section"><h2>Finance</h2><div class="slider">
+</div></div><div class="section">
+<h2>Finance</h2><div class="slider">
 <button class="arrow" onclick="slide('finance',-1)">❮</button>
 <div class="row" id="finance"></div>
 <button class="arrow" onclick="slide('finance',1)">❯</button>
-</div></div><div class="section"><h2>World</h2><div class="slider">
+</div></div><div class="section">
+<h2>World</h2><div class="slider">
 <button class="arrow" onclick="slide('world',-1)">❮</button>
 <div class="row" id="world"></div>
 <button class="arrow" onclick="slide('world',1)">❯</button>
@@ -190,12 +191,7 @@ padding:8px;
 </div></div></div><div class="footer">PulseGurgaon © 2026</div><script>
 
 let news=[]
-let page={
-gurgaon:0,
-finance:0,
-world:0
-}
-
+let page={gurgaon:0,finance:0,world:0}
 const perPage=3
 
 function createCard(article){
@@ -210,7 +206,6 @@ div.innerHTML=`
 `
 
 return div
-
 }
 
 function openArticle(title){
@@ -223,19 +218,9 @@ function render(section){
 let container=document.getElementById(section)
 container.innerHTML=""
 
-let filtered=news.filter(a=>{
-
-let t=a.title.toLowerCase()
-
-if(section==="gurgaon") return t.includes("gurgaon")||t.includes("gurugram")
-if(section==="finance") return t.includes("bank")||t.includes("finance")||t.includes("market")
-
-return true
-
-})
-
 let start=page[section]*perPage
-let visible=filtered.slice(start,start+perPage)
+
+let visible=news.slice(start,start+perPage)
 
 visible.forEach(a=>{
 container.appendChild(createCard(a))
@@ -246,7 +231,6 @@ container.appendChild(createCard(a))
 function slide(section,dir){
 
 page[section]+=dir
-
 if(page[section]<0) page[section]=0
 
 render(section)
