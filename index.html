@@ -1,9 +1,4 @@
-<!DOCTYPE html><html>
-<head>
-<title>PulseGurgaon</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
-
-*{box-sizing:border-box;}
+<!DOCTYPE html><html><head><title>PulseGurgaon</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
 
 body{
 font-family:Arial;
@@ -22,12 +17,10 @@ font-weight:bold;
 .nav{
 background:#e6e6e6;
 padding:10px;
-display:flex;
-flex-wrap:wrap;
-gap:15px;
 }
 
 .nav a{
+margin-right:20px;
 text-decoration:none;
 color:black;
 }
@@ -38,77 +31,57 @@ text-align:center;
 }
 
 .search input{
-width:100%;
-max-width:700px;
+width:80%;
 padding:12px;
 font-size:16px;
-border-radius:6px;
-border:1px solid #ccc;
 }
 
-.layout{
-display:grid;
-grid-template-columns:180px 1fr 260px;
+.container{
+display:flex;
 gap:20px;
 padding:20px;
-max-width:1400px;
-margin:auto;
 }
 
-.ad{
-background:white;
-padding:15px;
-border-radius:6px;
-text-align:center;
-min-height:200px;
+.main{
+flex:3;
+}
+
+.sidebar{
+flex:1;
 }
 
 .section{
 background:white;
 padding:20px;
-border-radius:8px;
-margin-bottom:25px;
-}
-
-.section h2{
-margin-top:0;
-}
-
-.slider{
-display:flex;
-align-items:center;
+margin-bottom:20px;
+border-radius:6px;
 }
 
 .row{
 display:flex;
+overflow:hidden;
 gap:15px;
-width:100%;
 }
 
 .card{
-flex:1;
+min-width:220px;
 background:#fafafa;
-border-radius:8px;
+padding:15px;
+border-radius:6px;
 box-shadow:0 2px 6px rgba(0,0,0,0.1);
-padding:10px;
 }
 
 .card img{
 width:100%;
-border-radius:6px;
-margin-bottom:8px;
-}
-
-.card h4{
-font-size:15px;
-margin:5px 0;
+border-radius:4px;
+margin-bottom:10px;
 }
 
 .card button{
 background:#1e63c6;
 color:white;
 border:none;
-padding:6px 10px;
+padding:8px 12px;
 border-radius:4px;
 cursor:pointer;
 }
@@ -117,18 +90,9 @@ cursor:pointer;
 background:#1e63c6;
 color:white;
 border:none;
-font-size:18px;
 padding:10px;
-border-radius:6px;
+border-radius:4px;
 cursor:pointer;
-margin:0 5px;
-}
-
-.blogs{
-background:white;
-border-radius:8px;
-padding:15px;
-margin-top:20px;
 }
 
 .footer{
@@ -136,27 +100,6 @@ background:black;
 color:white;
 text-align:center;
 padding:12px;
-}
-
-/* mobile */
-
-@media(max-width:900px){
-
-.layout{
-display:flex;
-flex-direction:column;
-padding:10px;
-}
-
-.row{
-flex-direction:column;
-}
-
-.arrow{
-font-size:16px;
-padding:8px;
-}
-
 }
 
 </style></head><body><div class="header">PulseGurgaon</div><div class="nav">
@@ -168,87 +111,92 @@ padding:8px;
 <a>Blogs</a>
 </div><div class="search">
 <input placeholder="Search news, places, dates...">
-</div><div class="layout"><div class="ad">ADVERTISEMENT</div><div><div class="section">
-<h2>Gurgaon</h2><div class="slider">
-<button class="arrow" onclick="slide('gurgaon',-1)">❮</button>
-<div class="row" id="gurgaon"></div>
-<button class="arrow" onclick="slide('gurgaon',1)">❯</button>
-</div></div><div class="section">
-<h2>Finance</h2><div class="slider">
-<button class="arrow" onclick="slide('finance',-1)">❮</button>
-<div class="row" id="finance"></div>
-<button class="arrow" onclick="slide('finance',1)">❯</button>
-</div></div><div class="section">
-<h2>World</h2><div class="slider">
-<button class="arrow" onclick="slide('world',-1)">❮</button>
-<div class="row" id="world"></div>
-<button class="arrow" onclick="slide('world',1)">❯</button>
-</div></div></div><div><div class="ad">ADVERTISEMENT</div><div class="blogs">
-<h3>Blogs</h3>
-<p>How to Invest ₹1000</p>
+</div><div class="container"><div class="main"><div class="section"><h2>Gurgaon</h2><button class="arrow" onclick="scrollLeft('gurgaon')"><</button>
+
+<button class="arrow" onclick="scrollRight('gurgaon')">></button>
+
+<div class="row" id="gurgaon"></div></div><div class="section"><h2>Finance</h2><button class="arrow" onclick="scrollLeft('finance')"><</button>
+
+<button class="arrow" onclick="scrollRight('finance')">></button>
+
+<div class="row" id="finance"></div></div><div class="section"><h2>World</h2><button class="arrow" onclick="scrollLeft('world')"><</button>
+
+<button class="arrow" onclick="scrollRight('world')">></button>
+
+<div class="row" id="world"></div></div></div><div class="sidebar"><div class="section">
+ADVERTISEMENT
+</div><div class="section"><h3>Blogs</h3><p>How to Invest ₹1000</p>
 <p>Hidden Places in Gurgaon</p>
-<p>Startup Ideas in India</p>
-</div></div></div><div class="footer">PulseGurgaon © 2026</div><script>
+<p>Startup Ideas in India</p></div></div></div><div class="footer">PulseGurgaon © 2026</div><script>
 
-let news=[]
-let page={gurgaon:0,finance:0,world:0}
-const perPage=3
+function openArticle(article){
 
-function createCard(article){
+localStorage.setItem("selectedArticle", JSON.stringify(article))
 
-const div=document.createElement("div")
-div.className="card"
+window.location.href="article.html"
 
-div.innerHTML=`
-<img src="https://image.pollinations.ai/prompt/news ${article.title}">
-<h4>${article.title}</h4>
-<button onclick="openArticle('${encodeURIComponent(article.title)}')">Read Article</button>
-`
-
-return div
 }
 
-function openArticle(title){
-localStorage.setItem("articleTitle",title)
-window.location="article.html"
-}
 
-function render(section){
+function scrollLeft(id){
 
-let container=document.getElementById(section)
-container.innerHTML=""
-
-let start=page[section]*perPage
-
-let visible=news.slice(start,start+perPage)
-
-visible.forEach(a=>{
-container.appendChild(createCard(a))
+document.getElementById(id).scrollBy({
+left:-300,
+behavior:'smooth'
 })
 
 }
 
-function slide(section,dir){
+function scrollRight(id){
 
-page[section]+=dir
-if(page[section]<0) page[section]=0
-
-render(section)
+document.getElementById(id).scrollBy({
+left:300,
+behavior:'smooth'
+})
 
 }
 
+
 async function loadNews(){
 
-let res=await fetch("https://pulsegurgaon-backend.onrender.com/news")
-news=await res.json()
+const res=await fetch("https://pulsegurgaon-backend.onrender.com/news")
 
-render("gurgaon")
-render("finance")
-render("world")
+const data=await res.json()
+
+const gurgaon=document.getElementById("gurgaon")
+
+const finance=document.getElementById("finance")
+
+const world=document.getElementById("world")
+
+data.forEach(article=>{
+
+const card=document.createElement("div")
+
+card.className="card"
+
+card.innerHTML=`
+
+<img src="https://image.pollinations.ai/prompt/${article.title}">
+
+<h4>${article.title}</h4>
+
+<button onclick='openArticle(${JSON.stringify(article)})'>
+Read Article
+</button>
+
+`
+
+gurgaon.appendChild(card)
+
+finance.appendChild(card.cloneNode(true))
+
+world.appendChild(card.cloneNode(true))
+
+})
 
 }
 
 loadNews()
 
-</script></body>
-</html>
+</script></body></html>
