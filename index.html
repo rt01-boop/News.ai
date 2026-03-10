@@ -1,5 +1,6 @@
 <!DOCTYPE html><html>
-<head><title>PulseGurgaon</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+<head><title>PulseGurgaon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
 
 *{
 box-sizing:border-box;
@@ -46,6 +47,8 @@ border-radius:6px;
 border:1px solid #ccc;
 }
 
+/* MAIN LAYOUT */
+
 .layout{
 display:grid;
 grid-template-columns:180px 1fr 260px;
@@ -57,7 +60,7 @@ margin:auto;
 
 .ad{
 background:white;
-padding:10px;
+padding:15px;
 border-radius:6px;
 text-align:center;
 min-height:200px;
@@ -74,6 +77,8 @@ margin-bottom:25px;
 margin-top:0;
 }
 
+/* SLIDER */
+
 .slider{
 display:flex;
 align-items:center;
@@ -83,16 +88,15 @@ align-items:center;
 display:flex;
 gap:15px;
 width:100%;
-justify-content:flex-start;
 }
 
 .card{
 flex:1;
-min-width:0;
 background:#fafafa;
 border-radius:8px;
 box-shadow:0 2px 6px rgba(0,0,0,0.1);
 padding:10px;
+min-width:0;
 }
 
 .card img{
@@ -140,13 +144,21 @@ text-align:center;
 padding:12px;
 }
 
+/* MOBILE RESPONSIVE */
+
 @media(max-width:900px){
 
 .layout{
-grid-template-columns:1fr;
+display:flex;
+flex-direction:column;
+padding:10px;
 }
 
-.ad{
+.row{
+flex-direction:column;
+}
+
+.arrow{
 display:none;
 }
 
@@ -161,15 +173,18 @@ display:none;
 <a>Blogs</a>
 </div><div class="search">
 <input placeholder="Search news, places, dates...">
-</div><div class="layout"><div class="ad">ADVERTISEMENT</div><div><div class="section"><h2>Gurgaon</h2><div class="slider">
+</div><div class="layout"><div class="ad">ADVERTISEMENT</div><div><div class="section">
+<h2>Gurgaon</h2><div class="slider">
 <button class="arrow" onclick="slide('gurgaon',-1)">❮</button>
 <div class="row" id="gurgaon"></div>
 <button class="arrow" onclick="slide('gurgaon',1)">❯</button>
-</div></div><div class="section"><h2>Finance</h2><div class="slider">
+</div></div><div class="section">
+<h2>Finance</h2><div class="slider">
 <button class="arrow" onclick="slide('finance',-1)">❮</button>
 <div class="row" id="finance"></div>
 <button class="arrow" onclick="slide('finance',1)">❯</button>
-</div></div><div class="section"><h2>World</h2><div class="slider">
+</div></div><div class="section">
+<h2>World</h2><div class="slider">
 <button class="arrow" onclick="slide('world',-1)">❮</button>
 <div class="row" id="world"></div>
 <button class="arrow" onclick="slide('world',1)">❯</button>
