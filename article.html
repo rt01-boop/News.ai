@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
+<!DOCTYPE html><html>
+<head><title>PulseGurgaon Article</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
 
-<title>PulseGurgaon Article</title>
-
-<style>
-
-body{font-family:Arial;margin:0;background:#f2f2f2;}
+body{
+font-family:Arial;
+margin:0;
+background:#f2f2f2;
+}
 
 .header{
 background:#1e63c6;
@@ -22,7 +21,7 @@ margin:auto;
 background:white;
 padding:25px;
 margin-top:20px;
-border-radius:6px;
+border-radius:8px;
 }
 
 img{
@@ -33,77 +32,98 @@ margin-bottom:20px;
 
 .source{
 color:gray;
-margin-bottom:15px;
+margin-bottom:10px;
+}
+
+.summary{
+background:#eef4ff;
+padding:15px;
+border-radius:6px;
+margin-bottom:20px;
+}
+
+.article{
+line-height:1.6;
+font-size:16px;
+margin-bottom:20px;
+}
+
+.vocab{
+background:#f7f7f7;
+padding:15px;
+border-radius:6px;
+}
+
+.vocab h3{
+margin-top:0;
 }
 
 .lang{
-margin-bottom:20px;
+margin-bottom:15px;
 }
 
 button{
 padding:8px 15px;
 margin-right:10px;
 cursor:pointer;
+background:#1e63c6;
+color:white;
+border:none;
+border-radius:4px;
 }
 
-</style>
-
-</head>
-
-<body>
-
-<div class="header">PulseGurgaon</div>
-
-<div class="container">
-
-<div class="lang">
+</style></head><body><div class="header">PulseGurgaon</div><div class="container"><div class="lang">
 <button onclick="showEnglish()">English</button>
 <button onclick="showHindi()">हिंदी</button>
-</div>
+</div><img id="image"><h2 id="title"></h2><div class="source">AI-Generated News Summary</div><div class="summary" id="summary"></div><div class="article" id="article"></div><div class="vocab"><h3>Vocabulary</h3><ul id="vocabList"></ul></div></div><script>
 
-<img id="image">
+const title = decodeURIComponent(localStorage.getItem("articleTitle"))
 
-<h2 id="title"></h2>
+document.getElementById("title").innerText = title
 
-<div class="source" id="source"></div>
+document.getElementById("image").src =
+"https://image.pollinations.ai/prompt/news " + title
 
-<div id="english"></div>
+document.getElementById("summary").innerText =
+"This article discusses " + title +
+". It highlights the latest developments and explains why the event is important for readers following current affairs."
 
-<div id="hindi" style="display:none"></div>
+document.getElementById("article").innerText =
+title + " has recently attracted public attention as new developments continue to emerge. Experts say the situation reflects broader changes taking place in the world of politics, economics, and society. Reports suggest that the issue could have wider implications depending on how authorities and organizations respond. Observers are closely monitoring the situation as additional information becomes available. Analysts believe the event demonstrates how quickly global and local news can evolve, influencing public discussion and decision-making. Readers are encouraged to follow updates as more details are expected in the coming days."
 
-<br>
+const vocab = [
+"Developments – important new events",
+"Implications – possible effects in the future",
+"Observers – people watching closely",
+"Authorities – official organizations",
+"Analysts – experts who study situations"
+]
 
-<a id="original" target="_blank">View Original Source</a>
+const list=document.getElementById("vocabList")
 
-</div>
-
-<script>
-
-const article=JSON.parse(localStorage.getItem("selectedArticle"));
-
-document.getElementById("title").innerText=article.title;
-document.getElementById("source").innerText=article.source;
-document.getElementById("original").href=article.link;
-
-document.getElementById("image").src="https://source.unsplash.com/900x500/?news,india";
-
-document.getElementById("english").innerText=
-"This article discusses "+article.title+". More developments are expected soon.";
-
-document.getElementById("hindi").innerText=
-"यह खबर "+article.title+" से संबंधित है और इससे जुड़ी नई जानकारी सामने आ सकती है।";
+vocab.forEach(word=>{
+const li=document.createElement("li")
+li.innerText=word
+list.appendChild(li)
+})
 
 function showEnglish(){
-document.getElementById("english").style.display="block";
-document.getElementById("hindi").style.display="none";
+
+document.getElementById("summary").style.display="block"
+document.getElementById("article").style.display="block"
+
 }
 
 function showHindi(){
-document.getElementById("english").style.display="none";
-document.getElementById("hindi").style.display="block";
+
+document.getElementById("summary").innerText =
+"यह लेख " + title +
+" से संबंधित है और हाल की घटनाओं का सार प्रस्तुत करता है।"
+
+document.getElementById("article").innerText =
+title + " हाल ही में चर्चा का विषय बना हुआ है। विशेषज्ञों के अनुसार यह घटना व्यापक सामाजिक और आर्थिक परिवर्तनों को दर्शाती है। रिपोर्टों से पता चलता है कि आने वाले समय में इसके प्रभाव और स्पष्ट हो सकते हैं।"
+
 }
 
-</script>
-
-</body>
+</script></body>
 </html>
