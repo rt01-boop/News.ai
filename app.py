@@ -1,56 +1,187 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
+import json
+import requests
+from datetime import datetime
 
 app = Flask(name)
 CORS(app)
 
-news = [
-{
-"title": "Barclays expands India footprint with new office in Gurugram",
-"source": "Barclays",
-"time": "2026-03-10",
-"summary": "Barclays has opened a new office in Gurugram to strengthen its operations in India.",
-"article": "Barclays announced the opening of a new office in Gurugram as part of its strategy to expand operations in India. The company said the new office will support technology, operations, and banking services across the region.",
-"vocabulary": [
-{"word":"footprint","meaning":"business presence"},
-{"word":"operations","meaning":"business activities"}
-]
-},
+DATA_FILE = "articles.json"
 
-{
-"title": "PwC's 6th Gurgaon office goes live with new finance team",
-"source": "PwC",
-"time": "2026-03-10",
-"summary": "PwC has launched its sixth office in Gurgaon to expand its consulting operations.",
-"article": "PwC announced the launch of its sixth office in Gurgaon. The office will support financial consulting and technology advisory services for clients across India.",
-"vocabulary": [
-{"word":"consulting","meaning":"professional advisory services"},
-{"word":"advisory","meaning":"providing guidance"}
-]
-},
+---------------------------
 
-{
-"title": "Global markets react to economic slowdown fears",
-"source": "Reuters",
-"time": "2026-03-10",
-"summary": "Stock markets around the world moved cautiously amid concerns of a global slowdown.",
-"article": "Investors reacted cautiously today as new economic data suggested a slowdown in global growth. Analysts believe central banks may adjust policies in response.",
-"vocabulary": [
-{"word":"investors","meaning":"people who invest money"},
-{"word":"analysts","meaning":"experts who study data"}
+JSON STORAGE
+
+---------------------------
+
+def load_articles():
+if not os.path.exists(DATA_FILE):
+return []
+
+with open(DATA_FILE, "r") as f:
+    return json.load(f)
+
+def save_articles(data):
+with open(DATA_FILE, "w") as f:
+json.dump(data, f, indent=2)
+
+---------------------------
+
+PHONE AI WORKERS
+
+---------------------------
+
+PHONE_WORKERS = [
+"http://phone1:5001/rewrite",
+"http://phone2:5001/rewrite",
+"http://phone3:5001/rewrite"
 ]
+
+def try_phone_ai(text):
+
+for worker in PHONE_WORKERS:
+
+    try:
+        r = requests.post(worker, json={"text": text}, timeout=10)
+
+        if r.status_code == 200:
+            return r.json()["rewrite"]
+
+    except:
+        pass
+
+return None
+
+---------------------------
+
+CLOUD AI PLACEHOLDERS
+
+---------------------------
+
+def try_cloud_ai(text):
+
+providers = [
+    "groq",
+    "openrouter",
+    "huggingface",
+    "together",
+    "deepinfra",
+    "fireworks",
+    "replicate",
+    "cohere",
+    "perplexity"
+]
+
+for p in providers:
+
+    try:
+        # placeholder call
+        return f"AI rewrite by {p}: {text}"
+
+    except:
+        pass
+
+return None
+
+---------------------------
+
+FALLBACK ENGINE
+
+---------------------------
+
+def fallback_rewrite(text):
+
+words = text.split()
+
+if len(words) > 80:
+    words = words[:80]
+
+return " ".join(words) + "..."
+
+---------------------------
+
+MAIN REWRITE ENGINE
+
+---------------------------
+
+def rewrite_article(text):
+
+phone = try_phone_ai(text)
+
+if phone:
+    return phone
+
+cloud = try_cloud_ai(text)
+
+if cloud:
+    return cloud
+
+return fallback_rewrite(text)
+
+---------------------------
+
+ADD ARTICLE
+
+---------------------------
+
+@app.route("/add", methods=["POST"])
+def add_article():
+
+data = request.json
+
+text = data.get("text")
+
+rewritten = rewrite_article(text)
+
+article = {
+    "title": data.get("title"),
+    "source": data.get("source"),
+    "time": datetime.now().isoformat(),
+    "summary": rewritten[:120],
+    "article": rewritten,
+    "vocabulary": []
 }
-]
 
-@app.route("/")
-def home():
-return "PulseGurgaon backend running"
+articles = load_articles()
+
+articles.insert(0, article)
+
+save_articles(articles)
+
+return jsonify({"status": "saved"})
+
+---------------------------
+
+GET NEWS
+
+---------------------------
 
 @app.route("/news")
 def get_news():
-return jsonify(news)
+
+return jsonify(load_articles())
+
+---------------------------
+
+HOME
+
+---------------------------
+
+@app.route("/")
+def home():
+
+return "PulseGurgaon AI backend running"
+
+---------------------------
+
+SERVER START
+
+---------------------------
 
 if name == "main":
+
 port = int(os.environ.get("PORT", 10000))
+
 app.run(host="0.0.0.0", port=port)
