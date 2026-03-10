@@ -1,6 +1,7 @@
 <!DOCTYPE html><html>
 <head>
 <title>PulseGurgaon</title><style>
+
 body{
 font-family:Arial;
 margin:0;
@@ -39,7 +40,7 @@ border-radius:6px;
 border:1px solid #ccc;
 }
 
-.main{
+.layout{
 display:grid;
 grid-template-columns:150px 1fr 250px;
 gap:20px;
@@ -48,33 +49,38 @@ padding:20px;
 
 .ad{
 background:white;
-border-radius:6px;
 padding:10px;
+border-radius:6px;
 text-align:center;
 }
 
 .section{
 background:white;
-padding:20px;
-border-radius:6px;
+border-radius:8px;
+padding:15px;
 margin-bottom:20px;
 }
 
+.section h2{
+margin-top:0;
+}
+
 .slider{
+position:relative;
 display:flex;
 align-items:center;
-gap:10px;
 }
 
 .row{
 display:flex;
-overflow:hidden;
 gap:15px;
-scroll-behavior:smooth;
+overflow:hidden;
+padding:10px;
+min-height:180px;
 }
 
 .card{
-min-width:260px;
+min-width:250px;
 background:#fafafa;
 border-radius:8px;
 box-shadow:0 2px 6px rgba(0,0,0,0.1);
@@ -88,13 +94,17 @@ margin-bottom:8px;
 }
 
 .card h4{
-margin:5px 0;
 font-size:15px;
+margin:5px 0;
 }
 
-.summary{
-font-size:13px;
-color:#555;
+.card button{
+background:#1e63c6;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:4px;
+cursor:pointer;
 }
 
 .arrow{
@@ -102,15 +112,16 @@ background:#1e63c6;
 color:white;
 border:none;
 font-size:18px;
-padding:8px 12px;
-border-radius:5px;
+padding:10px;
 cursor:pointer;
+border-radius:6px;
+margin:0 5px;
 }
 
 .blogs{
 background:white;
+border-radius:8px;
 padding:15px;
-border-radius:6px;
 margin-top:20px;
 }
 
@@ -120,6 +131,7 @@ color:white;
 text-align:center;
 padding:12px;
 }
+
 </style></head><body><div class="header">PulseGurgaon</div><div class="nav">
 <a>Home</a>
 <a>India</a>
@@ -129,21 +141,15 @@ padding:12px;
 <a>Blogs</a>
 </div><div class="search">
 <input placeholder="Search news, places, dates...">
-</div><div class="main"><div class="ad">ADVERTISEMENT</div><div><div class="section">
-<h2>Gurgaon</h2><div class="slider">
-<button class="arrow" onclick="slide('gurgaon',-300)">❮</button>
-<div class="row" id="gurgaon"></div>
-<button class="arrow" onclick="slide('gurgaon',300)">❯</button>
-</div></div><div class="section">
-<h2>Finance</h2><div class="slider">
-<button class="arrow" onclick="slide('finance',-300)">❮</button>
-<div class="row" id="finance"></div>
-<button class="arrow" onclick="slide('finance',300)">❯</button>
-</div></div><div class="section">
-<h2>World</h2><div class="slider">
-<button class="arrow" onclick="slide('world',-300)">❮</button>
-<div class="row" id="world"></div>
-<button class="arrow" onclick="slide('world',300)">❯</button>
+</div><div class="layout"><div class="ad">ADVERTISEMENT</div><div><div class="section"><h2>Gurgaon</h2><div class="slider">
+<button class="arrow" onclick="slide('gurgaon',-300)">❮</button><div class="row" id="gurgaon"></div><button class="arrow" onclick="slide('gurgaon',300)">❯</button>
+
+</div></div><div class="section"><h2>Finance</h2><div class="slider">
+<button class="arrow" onclick="slide('finance',-300)">❮</button><div class="row" id="finance"></div><button class="arrow" onclick="slide('finance',300)">❯</button>
+
+</div></div><div class="section"><h2>World</h2><div class="slider">
+<button class="arrow" onclick="slide('world',-300)">❮</button><div class="row" id="world"></div><button class="arrow" onclick="slide('world',300)">❯</button>
+
 </div></div></div><div><div class="ad">ADVERTISEMENT</div><div class="blogs">
 <h3>Blogs</h3>
 <p>How to Invest ₹1000</p>
@@ -163,15 +169,14 @@ div.className="card"
 div.innerHTML=`
 <img src="https://image.pollinations.ai/prompt/news ${article.title}">
 <h4>${article.title}</h4>
-<div class="summary">Quick summary about ${article.title}</div>
-<button onclick='openArticle(${JSON.stringify(article)})'>Read Article</button>
+<button onclick="openArticle('${encodeURIComponent(article.title)}')">Read Article</button>
 `
 
 return div
 }
 
-function openArticle(article){
-localStorage.setItem("selectedArticle",JSON.stringify(article))
+function openArticle(title){
+localStorage.setItem("articleTitle",title)
 window.location="article.html"
 }
 
@@ -188,7 +193,7 @@ let card=createCard(article)
 if(title.includes("gurgaon")||title.includes("gurugram"))
 document.getElementById("gurgaon").appendChild(card)
 
-else if(title.includes("bank")||title.includes("stock")||title.includes("market"))
+else if(title.includes("bank")||title.includes("finance")||title.includes("market"))
 document.getElementById("finance").appendChild(card)
 
 else
