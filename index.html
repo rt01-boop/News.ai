@@ -1,6 +1,5 @@
 <!DOCTYPE html><html>
-<head>
-<title>PulseGurgaon</title><style>
+<head><title>PulseGurgaon</title><style>
 
 body{
 font-family:Arial;
@@ -42,7 +41,7 @@ border:1px solid #ccc;
 
 .layout{
 display:grid;
-grid-template-columns:150px 1fr 250px;
+grid-template-columns:160px 1fr 260px;
 gap:20px;
 padding:20px;
 }
@@ -56,31 +55,22 @@ text-align:center;
 
 .section{
 background:white;
+padding:20px;
 border-radius:8px;
-padding:15px;
-margin-bottom:20px;
+margin-bottom:25px;
 }
 
 .section h2{
 margin-top:0;
 }
 
-.slider{
-position:relative;
-display:flex;
-align-items:center;
-}
-
 .row{
 display:flex;
 gap:15px;
-overflow:hidden;
-padding:10px;
-min-height:180px;
 }
 
 .card{
-min-width:250px;
+width:260px;
 background:#fafafa;
 border-radius:8px;
 box-shadow:0 2px 6px rgba(0,0,0,0.1);
@@ -113,9 +103,14 @@ color:white;
 border:none;
 font-size:18px;
 padding:10px;
-cursor:pointer;
 border-radius:6px;
+cursor:pointer;
 margin:0 5px;
+}
+
+.slider{
+display:flex;
+align-items:center;
 }
 
 .blogs{
@@ -142,13 +137,13 @@ padding:12px;
 </div><div class="search">
 <input placeholder="Search news, places, dates...">
 </div><div class="layout"><div class="ad">ADVERTISEMENT</div><div><div class="section"><h2>Gurgaon</h2><div class="slider">
-<button class="arrow" onclick="slide('gurgaon',-300)">❮</button><div class="row" id="gurgaon"></div><button class="arrow" onclick="slide('gurgaon',300)">❯</button>
+<button class="arrow" onclick="slide('gurgaon',-1)">❮</button><div class="row" id="gurgaon"></div><button class="arrow" onclick="slide('gurgaon',1)">❯</button>
 
 </div></div><div class="section"><h2>Finance</h2><div class="slider">
-<button class="arrow" onclick="slide('finance',-300)">❮</button><div class="row" id="finance"></div><button class="arrow" onclick="slide('finance',300)">❯</button>
+<button class="arrow" onclick="slide('finance',-1)">❮</button><div class="row" id="finance"></div><button class="arrow" onclick="slide('finance',1)">❯</button>
 
 </div></div><div class="section"><h2>World</h2><div class="slider">
-<button class="arrow" onclick="slide('world',-300)">❮</button><div class="row" id="world"></div><button class="arrow" onclick="slide('world',300)">❯</button>
+<button class="arrow" onclick="slide('world',-1)">❮</button><div class="row" id="world"></div><button class="arrow" onclick="slide('world',1)">❯</button>
 
 </div></div></div><div><div class="ad">ADVERTISEMENT</div><div class="blogs">
 <h3>Blogs</h3>
@@ -157,9 +152,14 @@ padding:12px;
 <p>Startup Ideas in India</p>
 </div></div></div><div class="footer">PulseGurgaon © 2026</div><script>
 
-function slide(id,amount){
-document.getElementById(id).scrollLeft+=amount
+let news=[]
+let page={
+gurgaon:0,
+finance:0,
+world:0
 }
+
+const perPage=3
 
 function createCard(article){
 
@@ -173,6 +173,7 @@ div.innerHTML=`
 `
 
 return div
+
 }
 
 function openArticle(title){
@@ -180,26 +181,49 @@ localStorage.setItem("articleTitle",title)
 window.location="article.html"
 }
 
-async function loadNews(){
+function render(section){
 
-const res=await fetch("https://pulsegurgaon-backend.onrender.com/news")
-const data=await res.json()
+let container=document.getElementById(section)
+container.innerHTML=""
 
-data.forEach(article=>{
+let filtered=news.filter(a=>{
 
-let title=article.title.toLowerCase()
-let card=createCard(article)
+let t=a.title.toLowerCase()
 
-if(title.includes("gurgaon")||title.includes("gurugram"))
-document.getElementById("gurgaon").appendChild(card)
+if(section==="gurgaon") return t.includes("gurgaon")||t.includes("gurugram")
+if(section==="finance") return t.includes("bank")||t.includes("finance")||t.includes("market")
 
-else if(title.includes("bank")||title.includes("finance")||title.includes("market"))
-document.getElementById("finance").appendChild(card)
-
-else
-document.getElementById("world").appendChild(card)
+return true
 
 })
+
+let start=page[section]*perPage
+let visible=filtered.slice(start,start+perPage)
+
+visible.forEach(a=>{
+container.appendChild(createCard(a))
+})
+
+}
+
+function slide(section,dir){
+
+page[section]+=dir
+
+if(page[section]<0) page[section]=0
+
+render(section)
+
+}
+
+async function loadNews(){
+
+let res=await fetch("https://pulsegurgaon-backend.onrender.com/news")
+news=await res.json()
+
+render("gurgaon")
+render("finance")
+render("world")
 
 }
 
