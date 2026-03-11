@@ -1,8 +1,7 @@
-# redeploy trigger
+import os
+import json
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-import json
-import os
 
 app = Flask(__name__)
 CORS(app)
@@ -14,12 +13,15 @@ def load_articles():
     if not os.path.exists(DATA_FILE):
         return []
     with open(DATA_FILE, "r") as f:
-        return json.load(f)
+        try:
+            return json.load(f)
+        except:
+            return []
 
 
-def save_articles(data):
+def save_articles(articles):
     with open(DATA_FILE, "w") as f:
-        json.dump(data, f, indent=2)
+        json.dump(articles, f, indent=2)
 
 
 @app.route("/")
@@ -51,15 +53,16 @@ def add_article():
     save_articles(articles)
 
     return {"status": "success"}
-@app.route("/test")
-def test_article():
 
+
+@app.route("/test")
+def test():
     article = {
         "title": "PulseGurgaon Test Article",
         "source": "PulseGurgaon",
         "time": "2026-03-11",
         "summary": "This is a backend test article.",
-        "article": "If you can see this article through the API, the storage system works perfectly.",
+        "article": "If you can see this article, your backend storage system works perfectly.",
         "vocabulary": []
     }
 
@@ -68,6 +71,7 @@ def test_article():
     save_articles(articles)
 
     return "Test article added"
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
