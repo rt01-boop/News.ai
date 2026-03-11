@@ -51,7 +51,23 @@ def add_article():
     save_articles(articles)
 
     return {"status": "success"}
+@app.route("/test")
+def test_article():
 
+    article = {
+        "title": "PulseGurgaon Test Article",
+        "source": "PulseGurgaon",
+        "time": "2026-03-11",
+        "summary": "This is a backend test article.",
+        "article": "If you can see this article through the API, the storage system works perfectly.",
+        "vocabulary": []
+    }
+
+    articles = load_articles()
+    articles.insert(0, article)
+    save_articles(articles)
+
+    return "Test article added"
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
