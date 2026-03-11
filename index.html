@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PulseGurgaon</title>
 
 <style>
 
 body{
-font-family:Arial;
+font-family: Arial, sans-serif;
 margin:0;
-background:#f3f3f3;
+background:#f2f2f2;
 }
 
 header{
@@ -20,11 +21,32 @@ font-size:20px;
 font-weight:bold;
 }
 
+nav{
+background:#e8e8e8;
+padding:10px;
+}
+
+nav a{
+margin-right:15px;
+text-decoration:none;
+color:#333;
+font-weight:bold;
+}
+
 .container{
-width:95%;
+display:flex;
 max-width:1100px;
 margin:auto;
 padding:15px;
+gap:20px;
+}
+
+.main{
+flex:3;
+}
+
+.sidebar{
+flex:1;
 }
 
 .section{
@@ -34,18 +56,56 @@ margin-bottom:20px;
 border-radius:6px;
 }
 
-.news{
+.news-card{
 border-bottom:1px solid #ddd;
 padding:10px 0;
 }
 
-.news h3{
+.news-card h3{
 margin:0;
 font-size:18px;
 }
 
-.news p{
+.news-card p{
 color:#555;
+margin:5px 0;
+}
+
+.arrows{
+margin-top:10px;
+}
+
+.arrow-btn{
+background:#1e73be;
+color:white;
+border:none;
+padding:6px 10px;
+margin-right:5px;
+border-radius:4px;
+cursor:pointer;
+}
+
+.search{
+width:100%;
+padding:10px;
+margin-bottom:20px;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+.ad{
+background:#f8f8f8;
+padding:15px;
+border-radius:5px;
+margin-bottom:20px;
+text-align:center;
+}
+
+.blogs a{
+display:block;
+margin-bottom:8px;
+text-decoration:none;
+color:#333;
 }
 
 footer{
@@ -56,7 +116,6 @@ padding:10px;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -65,21 +124,73 @@ padding:10px;
 PulseGurgaon
 </header>
 
+<nav>
+<a href="#">Home</a>
+<a href="#">India</a>
+<a href="#">Gurgaon</a>
+<a href="#">World</a>
+<a href="#">Finance</a>
+<a href="#">Blogs</a>
+</nav>
+
 <div class="container">
+
+<div class="main">
+
+<input class="search" placeholder="Search news, places, dates...">
 
 <div class="section">
 <h2>Gurgaon</h2>
-<div id="gurgaon"></div>
+
+<div id="gurgaon-news"></div>
+
+<div class="arrows">
+<button class="arrow-btn">&lt;</button>
+<button class="arrow-btn">&gt;</button>
+</div>
+
 </div>
 
 <div class="section">
 <h2>Finance</h2>
-<div id="finance"></div>
+
+<div id="finance-news"></div>
+
+<div class="arrows">
+<button class="arrow-btn">&lt;</button>
+<button class="arrow-btn">&gt;</button>
+</div>
+
 </div>
 
 <div class="section">
 <h2>World</h2>
-<div id="world"></div>
+
+<div id="world-news"></div>
+
+<div class="arrows">
+<button class="arrow-btn">&lt;</button>
+<button class="arrow-btn">&gt;</button>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="sidebar">
+
+<div class="ad">
+ADVERTISEMENT
+</div>
+
+<div class="section blogs">
+<h3>Blogs</h3>
+<a href="#">How to Invest ₹1000</a>
+<a href="#">Hidden Places in Gurgaon</a>
+<a href="#">Startup Ideas in India</a>
+</div>
+
 </div>
 
 </div>
@@ -88,28 +199,40 @@ PulseGurgaon
 PulseGurgaon © 2026
 </footer>
 
+
 <script>
 
 async function loadNews(){
 
-const res = await fetch("https://pulsegurgaon-backend.onrender.com/news")
+try{
 
-const articles = await res.json()
+const response = await fetch("https://pulsegurgaon-backend.onrender.com/news")
 
-const gurgaon = document.getElementById("gurgaon")
+const articles = await response.json()
+
+const gurgaon = document.getElementById("gurgaon-news")
 
 gurgaon.innerHTML=""
 
-articles.forEach(a=>{
+articles.forEach(article => {
 
-gurgaon.innerHTML += `
-<div class="news">
-<h3>${a.title}</h3>
-<p>${a.summary}</p>
+const card = `
+<div class="news-card">
+<h3>${article.title}</h3>
+<p>${article.summary}</p>
+<a href="#">Read article</a>
 </div>
 `
 
+gurgaon.innerHTML += card
+
 })
+
+}catch(e){
+
+console.log("News load failed",e)
+
+}
 
 }
 
