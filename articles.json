@@ -1,1 +1,17 @@
-[]
+[
+ {
+  "title": "Gurgaon Metro Expansion Approved",
+  "summary": "Government has approved a new metro corridor connecting Old Gurgaon to Cyber City to reduce traffic congestion.",
+  "category": "gurgaon"
+ },
+ {
+  "title": "India Startup Funding Rises",
+  "summary": "Indian startups saw a 25% increase in funding this quarter driven by fintech and AI sectors.",
+  "category": "finance"
+ },
+ {
+  "title": "Global AI Race Accelerates",
+  "summary": "Major tech companies are investing billions into AI infrastructure as the global competition intensifies.",
+  "category": "world"
+ }
+]
